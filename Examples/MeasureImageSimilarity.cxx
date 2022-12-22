@@ -354,7 +354,7 @@ MeasureImageSimilarity(itk::ants::CommandLineParser * parser)
       if (antsRandomSeed > 0)
       {
         randomizer->SetSeed(antsRandomSeed);
-        regHelper->m_RegistrationRandomSeed = antsRandomSeed;
+        regHelper->setRandomSeed(antsRandomSeed);
 
         if (verbose)
         {

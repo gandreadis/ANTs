@@ -877,6 +877,10 @@ public:
     this->m_LogStream = &logStream;
   }
 
+  void setRandomSeed(int randomSeed) {
+    this->m_RegistrationRandomSeed = randomSeed;
+  }
+
 protected:
   RegistrationHelper();
   ~RegistrationHelper() override;
