@@ -333,7 +333,28 @@ MeasureImageSimilarity(itk::ants::CommandLineParser * parser)
 
       using RandomizerType = itk::Statistics::MersenneTwisterRandomVariateGenerator;
       typename RandomizerType::Pointer randomizer = RandomizerType::New();
-      randomizer->SetSeed(1234);
+
+      int antsRandomSeed = 1234;
+
+      itk::ants::CommandLineParser::OptionType::Pointer randomSeedOption = parser->GetOption("random-seed");
+      if (randomSeedOption && randomSeedOption->GetNumberOfFunctions())
+      {
+        antsRandomSeed = parser->Convert<int>(randomSeedOption->GetFunction(0)->GetName());
+      }
+      else
+      {
+        char * envSeed = getenv("ANTS_RANDOM_SEED");
+
+        if (envSeed != nullptr)
+        {
+          antsRandomSeed = std::stoi(envSeed);
+        }
+      }
+
+      if (antsRandomSeed != 0)
+      {
+        randomizer->SetSeed(antsRandomSeed);
+      }
 
       unsigned long index = 0;
 
