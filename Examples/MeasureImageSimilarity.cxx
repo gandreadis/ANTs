@@ -334,7 +334,7 @@ MeasureImageSimilarity(itk::ants::CommandLineParser * parser)
       using RandomizerType = itk::Statistics::MersenneTwisterRandomVariateGenerator;
       typename RandomizerType::Pointer randomizer = RandomizerType::New();
 
-      int antsRandomSeed = 1234;
+      int antsRandomSeed = -1;
 
       itk::ants::CommandLineParser::OptionType::Pointer randomSeedOption = parser->GetOption("random-seed");
       if (randomSeedOption && randomSeedOption->GetNumberOfFunctions())
@@ -351,9 +351,15 @@ MeasureImageSimilarity(itk::ants::CommandLineParser * parser)
         }
       }
 
-      if (antsRandomSeed != 0)
+      if (antsRandomSeed > 0)
       {
         randomizer->SetSeed(antsRandomSeed);
+        regHelper->m_RegistrationRandomSeed = antsRandomSeed;
+
+        if (verbose)
+        {
+          std::cout << "Using random seed: " << antsRandomSeed << std::endl;
+        }
       }
 
       unsigned long index = 0;
