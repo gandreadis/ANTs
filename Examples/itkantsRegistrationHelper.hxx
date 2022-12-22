@@ -1989,10 +1989,11 @@ RegistrationHelper<TComputeType, VImageDimension>::DoRegistration()
         typename DisplacementFieldRegistrationType::Pointer displacementFieldRegistration =
           DisplacementFieldRegistrationType::New();
 
-        if (this->m_RegistrationRandomSeed != 0)
-        {
-          displacementFieldRegistration->MetricSamplingReinitializeSeed(this->m_RegistrationRandomSeed);
-        }
+//        if (this->m_RegistrationRandomSeed != 0)
+//        {
+//          displacementFieldRegistration->MetricSamplingReinitializeSeed(this->m_RegistrationRandomSeed);
+//        }
+        displacementFieldRegistration->MetricSamplingReinitializeSeed(50000);
 
         if (this->m_RestrictDeformationOptimizerWeights.size() > currentStageNumber)
         {

@@ -363,7 +363,6 @@ MeasureImageSimilarity(itk::ants::CommandLineParser * parser)
 
       int measureRandomSeed = -1;
 
-      itk::ants::CommandLineParser::OptionType::Pointer randomSeedOption = parser->GetOption("random-seed");
       if (randomSeedOption && randomSeedOption->GetNumberOfFunctions())
       {
         measureRandomSeed = parser->Convert<int>(randomSeedOption->GetFunction(0)->GetName());
