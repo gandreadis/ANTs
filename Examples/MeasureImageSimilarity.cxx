@@ -309,6 +309,33 @@ MeasureImageSimilarity(itk::ants::CommandLineParser * parser)
         return EXIT_FAILURE;
     }
 
+    int antsRandomSeed = -1;
+
+    itk::ants::CommandLineParser::OptionType::Pointer randomSeedOption = parser->GetOption("random-seed");
+    if (randomSeedOption && randomSeedOption->GetNumberOfFunctions())
+    {
+      antsRandomSeed = parser->Convert<int>(randomSeedOption->GetFunction(0)->GetName());
+    }
+    else
+    {
+      char * envSeed = getenv("ANTS_RANDOM_SEED");
+
+      if (envSeed != nullptr)
+      {
+        antsRandomSeed = std::stoi(envSeed);
+      }
+    }
+
+    if (antsRandomSeed > 0)
+    {
+      regHelper->setRandomSeed(antsRandomSeed);
+
+      if (verbose)
+      {
+        std::cout << "Using random seed for registration: " << antsRandomSeed << std::endl;
+      }
+    }
+
     imageMetric->SetVirtualDomainFromImage(fixedImage);
 
     imageMetric->SetFixedImage(fixedImage);
@@ -334,12 +361,12 @@ MeasureImageSimilarity(itk::ants::CommandLineParser * parser)
       using RandomizerType = itk::Statistics::MersenneTwisterRandomVariateGenerator;
       typename RandomizerType::Pointer randomizer = RandomizerType::New();
 
-      int antsRandomSeed = -1;
+      int measureRandomSeed = -1;
 
       itk::ants::CommandLineParser::OptionType::Pointer randomSeedOption = parser->GetOption("random-seed");
       if (randomSeedOption && randomSeedOption->GetNumberOfFunctions())
       {
-        antsRandomSeed = parser->Convert<int>(randomSeedOption->GetFunction(0)->GetName());
+        measureRandomSeed = parser->Convert<int>(randomSeedOption->GetFunction(0)->GetName());
       }
       else
       {
@@ -347,18 +374,17 @@ MeasureImageSimilarity(itk::ants::CommandLineParser * parser)
 
         if (envSeed != nullptr)
         {
-          antsRandomSeed = std::stoi(envSeed);
+          measureRandomSeed = std::stoi(envSeed);
         }
       }
 
-      if (antsRandomSeed > 0)
+      if (measureRandomSeed > 0)
       {
-        randomizer->SetSeed(antsRandomSeed);
-        regHelper->setRandomSeed(antsRandomSeed);
+        randomizer->SetSeed(measureRandomSeed);
 
         if (verbose)
         {
-          std::cout << "Using random seed: " << antsRandomSeed << std::endl;
+          std::cout << "Using random seed for sampling: " << measureRandomSeed << std::endl;
         }
       }
 
