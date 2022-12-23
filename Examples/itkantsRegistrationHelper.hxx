@@ -1993,6 +1993,9 @@ RegistrationHelper<TComputeType, VImageDimension>::DoRegistration()
 //        {
 //          displacementFieldRegistration->MetricSamplingReinitializeSeed(this->m_RegistrationRandomSeed);
 //        }
+
+        printf("TEST TEST TEST \n\n\n\n\n\n\n\n\n\n\n");
+        displacementFieldRegistration->MetricSamplingReinitializeSeed();
         displacementFieldRegistration->MetricSamplingReinitializeSeed(50000);
 
         if (this->m_RestrictDeformationOptimizerWeights.size() > currentStageNumber)
